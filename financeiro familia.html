@@ -102,7 +102,7 @@ h1{font-size:20px;font-weight:700;margin-bottom:2px;}
 <!-- CARD 1 -->
 <div class="card">
   <div class="card-title">💵 Caixa total (Itaú + C6)</div>
-  <input class="caixa-val" id="caixa" type="number" inputmode="decimal" placeholder="0,00" oninput="calcAll();agendarSave()">
+  <input class="caixa-val" id="caixa" type="text" inputmode="decimal" placeholder="4.988,15" oninput="calcAll();agendarSave()">
   <div class="caixa-sub">Atualize sempre que o saldo mudar nos bancos</div>
 </div>
 
@@ -308,7 +308,14 @@ function renderVars(){
 // ══ CALC
 function calcAll(){
   var dm = dadosMes();
-  var cx = parseFloat(document.getElementById('caixa').value)||0;
+  var caixaRaw = document.getElementById('caixa').value||'0';
+  // Handle Brazilian format: 4.988,15 or 4988,15 or 4988.15
+  var caixaClean = caixaRaw.replace(/\./g,'').replace(',','.');
+  if(caixaRaw.indexOf(',') === -1 && caixaRaw.indexOf('.') !== -1) {
+    // American format with dot as decimal
+    caixaClean = caixaRaw;
+  }
+  var cx = parseFloat(caixaClean)||0;
   dm.caixa = cx;
   
   var fxT=0,fxP=0;
