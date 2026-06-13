@@ -106,6 +106,17 @@ h1{font-size:20px;font-weight:700;margin-bottom:2px;}
   <div class="caixa-sub">Atualize sempre que o saldo mudar nos bancos</div>
 </div>
 
+<!-- CARD A RECEBER -->
+<div class="card" style="border-color:#1a3a2a;">
+  <div class="card-title" style="color:#3a7a5a;">💚 A receber este mês</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <input id="areceber" type="text" inputmode="decimal" placeholder="Ex: 988,30 da inquilina" 
+      style="flex:1;background:#0d1f15;border:1px solid #1a3a2a;border-radius:10px;padding:12px;color:#00c47a;font-size:16px;font-family:inherit;outline:none;"
+      oninput="calcAll();agendarSave()">
+  </div>
+  <div style="font-size:10px;color:#2a5a3a;margin-top:6px;">Soma ao caixa no cálculo da sobra real</div>
+</div>
+
 <!-- CARD 2 -->
 <div class="card">
   <div class="card-title">➕ Lançar gasto</div>
@@ -148,6 +159,7 @@ h1{font-size:20px;font-weight:700;margin-bottom:2px;}
   <div class="resumo-n" id="resumoN">--</div>
   <div style="margin-top:10px;">
     <div class="r-row"><span>Caixa atual</span><span id="rCaixa">--</span></div>
+    <div class="r-row" id="rowRec" style="display:none"><span>A receber</span><span id="rRec" style="color:#00c47a">--</span></div>
     <div class="r-row"><span>Fixas pendentes</span><span id="rFix" style="color:#ff4560">--</span></div>
     <div class="r-row"><span>Variáveis</span><span id="rVar" style="color:#ff4560">--</span></div>
     <div class="r-sep"></div>
@@ -249,6 +261,7 @@ function dadosMes(){
     // Cria mês novo com fixas padrão zeradas
     dados[k] = {
       caixa: 0,
+      areceber: 0,
       fixas: FIXAS_PADRAO.map(function(f){return {nome:f.nome,valor:f.valor,pago:false};}),
       vars: []
     };
@@ -271,6 +284,8 @@ function renderMes(){
   
   var dm = dadosMes();
   document.getElementById('caixa').value = dm.caixa || '';
+  var arEl = document.getElementById('areceber');
+  if(arEl) arEl.value = dm.areceber || '';
   renderFixas();
   renderVars();
   calcAll();
@@ -298,28 +313,56 @@ function renderVars(){
   el.innerHTML = dm.vars.slice().reverse().map(function(v,ri){
     var i = dm.vars.length-1-ri;
     return '<div class="var-item">'
-      +'<div class="var-l"><div class="var-d">'+esc(v.desc)+'</div><div class="var-t">'+v.hora+'</div></div>'
-      +'<span class="var-v">- R$ '+fmt(v.val)+'</span>'
-      +'<button class="var-del" onclick="delVar('+i+')">✕</button>'
+      +'<div class="var-l" onclick="editVar('+i+')" style="cursor:pointer">'
+        +'<div class="var-d">'+esc(v.desc)+'</div>'
+        +'<div class="var-t">'+v.hora+' · toque para editar</div>'
+      +'</div>'
+      +'<span class="var-v" onclick="editVar('+i+')" style="cursor:pointer">- R$ '+fmt(v.val)+'</span>'
+      +'<button class="var-del" onclick="delVar('+i+')" style="font-size:18px;padding:6px 10px;color:#ff4560;">✕</button>'
       +'</div>';
   }).join('');
 }
 
 // ══ CALC
+function parseBRL(s){
+  // Accepts: 4988.15, 4988,15, 4.988,15, 4,988.15
+  var str = String(s||'0').trim();
+  if(!str) return 0;
+  // If has comma and dot, figure out which is decimal
+  if(str.indexOf(',')!==-1 && str.indexOf('.')!==-1){
+    var lastComma = str.lastIndexOf(',');
+    var lastDot = str.lastIndexOf('.');
+    if(lastComma > lastDot){
+      // comma is decimal: 4.988,15
+      str = str.replace(/\./g,'').replace(',','.');
+    } else {
+      // dot is decimal: 4,988.15
+      str = str.replace(/,/g,'');
+    }
+  } else if(str.indexOf(',')!==-1){
+    str = str.replace(',','.');
+  }
+  var n = parseFloat(str);
+  return isNaN(n)?0:n;
+}
+
 function calcAll(){
   var dm = dadosMes();
-  var caixaRaw = document.getElementById('caixa').value||'0';
-  // Handle Brazilian format: 4.988,15 or 4988,15 or 4988.15
-  var caixaClean = caixaRaw.replace(/\./g,'').replace(',','.');
-  if(caixaRaw.indexOf(',') === -1 && caixaRaw.indexOf('.') !== -1) {
-    // American format with dot as decimal
-    caixaClean = caixaRaw;
-  }
-  var cx = parseFloat(caixaClean)||0;
+  var cx = parseBRL(document.getElementById('caixa').value);
   dm.caixa = cx;
   
+  // A receber
+  var recEl = document.getElementById('areceber');
+  var rec = recEl ? parseBRL(recEl.value) : 0;
+  dm.areceber = rec;
+
+  // Fixas
   var fxT=0,fxP=0;
-  dm.fixas.forEach(function(f){var v=parseFloat(f.valor)||0;fxT+=v;if(f.pago)fxP+=v;});
+  dm.fixas.forEach(function(f){
+    var v=parseBRL(f.valor);
+    fxT+=v;
+    if(f.pago)fxP+=v;
+  });
   var fxF=fxT-fxP;
   var pct=fxT>0?Math.round(fxP/fxT*100):0;
   
@@ -328,16 +371,26 @@ function calcAll(){
   setT('fxFalta','R$ '+fmt(fxF));
   document.getElementById('fxBar').style.width=pct+'%';
   
+  // Variáveis
   var vT=0;
-  dm.vars.forEach(function(v){vT+=parseFloat(v.val)||0;});
+  dm.vars.forEach(function(v){vT+=parseBRL(v.val);});
   setT('varTotal','R$ '+fmt(vT));
   
-  var sob=cx-fxF-vT;
+  // Caixa real = saldo atual - variáveis (gastos já saíram do banco)
+  // Sobra = caixa - fixas pendentes - variáveis que ainda não saíram
+  // Lógica: o caixa JÁ reflete gastos pagos pelo banco
+  // Mas variáveis lançadas no app podem ser gastos em dinheiro ainda não no banco
+  // Então sobra = caixa + a_receber - fixas_pendentes - variáveis
+  var sob = cx + rec - fxF - vT;
+  
   var rn=document.getElementById('resumoN');
   rn.textContent=(sob<0?'- ':'')+'R$ '+fmt(Math.abs(sob));
   rn.style.color=sob>=0?'#00c47a':'#ff4560';
   
   setT('rCaixa','R$ '+fmt(cx));
+  var rowRec=document.getElementById('rowRec');
+  if(rowRec) rowRec.style.display=rec>0?'flex':'none';
+  if(rec>0) setT('rRec','+ R$ '+fmt(rec));
   setT('rFix','- R$ '+fmt(fxF));
   setT('rVar','- R$ '+fmt(vT));
   var rs=document.getElementById('rSob');
@@ -390,9 +443,23 @@ function delFixa(i){
   renderFixas();calcAll();agendarSave();
 }
 
+function editVar(i){
+  var v = dadosMes().vars[i];
+  var newVal = prompt('Editar valor de "'+v.desc+'":', v.val);
+  if(newVal === null) return;
+  var parsed = parseBRL(newVal);
+  if(isNaN(parsed)||parsed<=0){toast('⚠️ Valor inválido');return;}
+  dadosMes().vars[i].val = parsed;
+  renderVars();calcAll();agendarSave();
+  toast('✓ Atualizado para R$ '+fmt(parsed));
+}
+
 function delVar(i){
+  var v = dadosMes().vars[i];
+  if(!confirm('Remover "'+v.desc+'"?')) return;
   dadosMes().vars.splice(i,1);
   renderVars();calcAll();agendarSave();
+  toast('Removido');
 }
 
 // ══ SAVE / SYNC
