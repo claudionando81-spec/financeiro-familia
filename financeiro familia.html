@@ -10,527 +10,500 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;padding:16px 14px 100px;}
-h1{font-size:20px;font-weight:700;margin-bottom:4px;}
-.sub{font-size:12px;color:#666;margin-bottom:20px;}
-.sync-bar{display:flex;align-items:center;justify-content:space-between;background:#111;border-radius:10px;padding:8px 12px;margin-bottom:16px;}
-.sync-dot{width:8px;height:8px;border-radius:50%;background:#333;margin-right:6px;flex-shrink:0;}
+h1{font-size:20px;font-weight:700;margin-bottom:2px;}
+.sub{font-size:12px;color:#555;margin-bottom:14px;}
+.sync-bar{display:flex;align-items:center;background:#111;border-radius:10px;padding:8px 12px;margin-bottom:14px;gap:8px;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#333;flex-shrink:0;}
 .sync-dot.ok{background:#00c47a;}
 .sync-dot.err{background:#ff4560;}
 .sync-dot.loading{background:#f5c842;animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-.sync-text{font-size:11px;color:#666;flex:1;}
-.sync-btn{background:#1a1a1a;border:1px solid #333;color:#aaa;padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;}
-
-/* CARDS */
-.card{background:#111;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid #1e1e1e;}
-.card-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:12px;}
-
-/* CARD 1 - CAIXA */
-.caixa-val{font-size:42px;font-weight:900;font-family:'Courier New',monospace;color:#00c47a;outline:none;width:100%;background:transparent;border:none;caret-color:#00c47a;}
-.caixa-val:focus{border-bottom:2px solid #00c47a;}
-.caixa-sub{font-size:11px;color:#444;margin-top:4px;}
-
-/* CARD 2 - LANÇAR GASTO */
-.gasto-input-wrap{display:flex;gap:8px;}
-.gasto-input{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px;color:#fff;font-size:16px;font-family:inherit;outline:none;}
-.gasto-input:focus{border-color:#ff4560;}
-.gasto-btn{background:#ff4560;border:none;border-radius:10px;padding:14px 18px;color:#fff;font-size:22px;font-weight:700;cursor:pointer;flex-shrink:0;}
-.gasto-hint{font-size:11px;color:#444;margin-top:8px;}
-
-/* CARD 3 - DESPESAS FIXAS */
-.fixa-item{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1a1a1a;}
+.sync-text{font-size:11px;color:#555;flex:1;}
+.mes-nav{display:flex;align-items:center;justify-content:space-between;background:#111;border-radius:10px;padding:8px 14px;margin-bottom:14px;}
+.mes-btn{background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.mes-label{font-size:14px;font-weight:700;color:#fff;}
+.card{background:#111;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #1e1e1e;}
+.card-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#444;margin-bottom:10px;}
+.caixa-val{font-size:38px;font-weight:900;font-family:'Courier New',monospace;color:#00c47a;outline:none;width:100%;background:transparent;border:none;border-bottom:1px solid #1a1a1a;caret-color:#00c47a;padding-bottom:4px;}
+.caixa-sub{font-size:11px;color:#333;margin-top:6px;}
+.gasto-wrap{display:flex;gap:8px;}
+.gasto-in{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:13px;color:#fff;font-size:16px;font-family:inherit;outline:none;}
+.gasto-in:focus{border-color:#ff4560;}
+.gasto-btn{background:#ff4560;border:none;border-radius:10px;padding:13px 18px;color:#fff;font-size:22px;font-weight:700;cursor:pointer;}
+.gasto-hint{font-size:10px;color:#333;margin-top:6px;}
+.fixa-item{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #161616;}
 .fixa-item:last-child{border-bottom:none;}
-.fixa-check{width:26px;height:26px;border-radius:8px;border:2px solid #333;background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
+.fixa-check{width:26px;height:26px;border-radius:7px;border:2px solid #2a2a2a;background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;transition:.15s;touch-action:manipulation;}
 .fixa-check.pago{background:#00c47a;border-color:#00c47a;}
-.fixa-nome{flex:1;background:transparent;border:none;color:#fff;font-size:14px;font-family:inherit;outline:none;min-width:0;}
-.fixa-nome.pago{text-decoration:line-through;color:#444;}
-.fixa-valor{background:transparent;border:none;color:#f5c842;font-size:14px;font-family:'Courier New',monospace;font-weight:700;width:80px;text-align:right;outline:none;}
-.fixa-valor.pago{color:#333;}
-.fixa-del{background:none;border:none;color:#333;font-size:18px;cursor:pointer;padding:4px;flex-shrink:0;}
-.fixa-del:hover{color:#ff4560;}
-.add-btn{width:100%;margin-top:10px;background:#1a1a1a;border:1px dashed #2a2a2a;color:#555;padding:12px;border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s;}
-.add-btn:hover{border-color:#00c47a;color:#00c47a;}
-
-/* CARD 4 - TOTAL FIXAS */
-.total-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;}
-.total-label{font-size:13px;color:#666;}
-.total-val{font-size:15px;font-family:'Courier New',monospace;font-weight:700;}
-.total-row.destaque .total-label{color:#fff;font-weight:600;}
-.total-row.destaque .total-val{font-size:18px;}
-.prog-track{height:5px;background:#1a1a1a;border-radius:3px;overflow:hidden;margin:8px 0;}
-.prog-fill{height:100%;border-radius:3px;background:#00c47a;transition:width .5s;}
-
-/* CARD 5 - VARIÁVEIS */
-.var-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #1a1a1a;}
+.fixa-nome{flex:1;background:transparent;border:none;color:#ccc;font-size:13px;font-family:inherit;outline:none;min-width:0;}
+.fixa-nome.pago{text-decoration:line-through;color:#333;}
+.fixa-valor{background:transparent;border:none;color:#f5c842;font-size:13px;font-family:'Courier New',monospace;font-weight:700;width:75px;text-align:right;outline:none;}
+.fixa-valor.pago{color:#2a2a2a;}
+.fixa-del{background:none;border:none;color:#222;font-size:16px;cursor:pointer;padding:4px;}
+.add-btn{width:100%;margin-top:8px;background:#1a1a1a;border:1px dashed #222;color:#444;padding:11px;border-radius:9px;font-size:12px;cursor:pointer;font-family:inherit;}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;}
+.tl{font-size:12px;color:#555;}
+.tv{font-size:14px;font-family:'Courier New',monospace;font-weight:700;}
+.total-row.big .tl{color:#ddd;font-size:13px;font-weight:600;}
+.total-row.big .tv{font-size:17px;}
+.prog{height:4px;background:#1a1a1a;border-radius:3px;overflow:hidden;margin:6px 0;}
+.prog-f{height:100%;border-radius:3px;background:#00c47a;transition:width .4s;}
+.var-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #161616;}
 .var-item:last-child{border-bottom:none;}
-.var-desc{font-size:13px;flex:1;}
-.var-data{font-size:10px;color:#444;margin-top:2px;}
-.var-val{font-size:14px;font-family:'Courier New',monospace;color:#ff4560;font-weight:700;margin:0 8px;}
-.var-del{background:none;border:none;color:#333;font-size:16px;cursor:pointer;}
-.empty{text-align:center;color:#333;font-size:13px;padding:20px 0;}
-
-/* CARD 6 - RESUMO */
-.resumo-num{font-size:48px;font-weight:900;font-family:'Courier New',monospace;text-align:center;padding:10px 0;line-height:1;}
-.resumo-breakdown{margin-top:12px;}
-.resumo-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#555;}
-.resumo-row span:last-child{font-family:'Courier New',monospace;}
-
-/* TOAST */
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid #333;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;display:none;z-index:999;white-space:nowrap;}
-
-/* BOTTOM BAR */
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#0d0d0d;border-top:1px solid #1a1a1a;padding:10px 16px;padding-bottom:env(safe-area-inset-bottom);display:flex;gap:8px;}
-.bottom-bar button{flex:1;padding:12px;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
-.btn-config{background:#1a1a1a;color:#666;}
-.btn-sync{background:#00c47a;color:#000;}
+.var-l{flex:1;}
+.var-d{font-size:13px;color:#ccc;}
+.var-t{font-size:10px;color:#333;margin-top:1px;}
+.var-v{font-size:13px;font-family:'Courier New',monospace;color:#ff4560;font-weight:700;margin:0 8px;white-space:nowrap;}
+.var-del{background:none;border:none;color:#222;font-size:15px;cursor:pointer;}
+.empty{text-align:center;color:#2a2a2a;font-size:12px;padding:16px 0;}
+.resumo-n{font-size:44px;font-weight:900;font-family:'Courier New',monospace;text-align:center;padding:8px 0;line-height:1;}
+.r-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;color:#444;}
+.r-row span:last-child{font-family:'Courier New',monospace;}
+.r-sep{height:1px;background:#1a1a1a;margin:5px 0;}
+.r-big{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;font-weight:700;}
+.r-big span:last-child{font-family:'Courier New',monospace;}
+#toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#1e1e1e;border:1px solid #2a2a2a;color:#fff;padding:9px 18px;border-radius:18px;font-size:12px;display:none;z-index:999;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
+.bot{position:fixed;bottom:0;left:0;right:0;background:#0d0d0d;border-top:1px solid #1a1a1a;padding:10px 14px;padding-bottom:env(safe-area-inset-bottom);display:flex;gap:8px;}
+.bot button{flex:1;padding:11px;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-cfg{background:#1a1a1a;color:#555;}
+.btn-syn{background:#00c47a;color:#000;}
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;padding:16px;overflow-y:auto;}
+.modal-box{background:#111;border-radius:16px;padding:20px;max-width:420px;margin:30px auto;}
+.modal-box h2{font-size:17px;margin-bottom:3px;}
+.modal-box p{font-size:11px;color:#444;margin-bottom:16px;}
+.lbl{font-size:10px;color:#444;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em;}
+.inp{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:9px;padding:11px;color:#fff;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;}
+.inp.mono{font-family:'Courier New',monospace;font-size:12px;}
+.gbtn{width:100%;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px;}
+.gbtn.grn{background:#00c47a;color:#000;}
+.gbtn.drk{background:#1a1a1a;border:1px solid #2a2a2a;color:#555;}
+.cfg-share{margin-top:12px;background:#0a0a0a;border-radius:9px;padding:11px;}
+.cfg-share p{font-size:10px;color:#444;margin-bottom:5px;font-weight:700;}
+.cfg-share span{font-size:11px;color:#f5c842;font-family:'Courier New',monospace;word-break:break-all;}
 </style>
 </head>
 <body>
 
-<h1>💰 Financeiro</h1>
-<div class="sub" id="mes-label">Junho 2026 · Família Martins</div>
+<h1>💰 Financeiro Família</h1>
+<div class="sub" id="subLabel">Martins · carregando...</div>
 
 <div class="sync-bar">
   <div class="sync-dot" id="syncDot"></div>
   <span class="sync-text" id="syncText">Configurar sincronização</span>
-  <button class="sync-btn" onclick="showConfig()">⚙️ Config</button>
 </div>
 
-<!-- CARD 1: CAIXA -->
+<div class="mes-nav">
+  <button class="mes-btn" onclick="mudaMes(-1)">‹</button>
+  <span class="mes-label" id="mesLabel">--</span>
+  <button class="mes-btn" onclick="mudaMes(1)">›</button>
+</div>
+
+<!-- CARD 1 -->
 <div class="card">
-  <div class="card-title">💵 Caixa total</div>
-  <input class="caixa-val" id="caixa" type="number" inputmode="decimal" placeholder="0,00" oninput="calcAll();scheduleSave()">
-  <div class="caixa-sub">Itaú + C6 juntos — atualize sempre que mudar</div>
+  <div class="card-title">💵 Caixa total (Itaú + C6)</div>
+  <input class="caixa-val" id="caixa" type="number" inputmode="decimal" placeholder="0,00" oninput="calcAll();agendarSave()">
+  <div class="caixa-sub">Atualize sempre que o saldo mudar nos bancos</div>
 </div>
 
-<!-- CARD 2: LANÇAR GASTO -->
+<!-- CARD 2 -->
 <div class="card">
   <div class="card-title">➕ Lançar gasto</div>
-  <div class="gasto-input-wrap">
-    <input class="gasto-input" id="gastoInput" type="text" placeholder="Mercado 150 ou Gasolina 80,50" onkeydown="if(event.key==='Enter')addGasto()">
+  <div class="gasto-wrap">
+    <input class="gasto-in" id="gastoIn" type="text" placeholder='Ex: Mercado 150 ou Farmácia 45,80' onkeydown="if(event.key==='Enter')addGasto()">
     <button class="gasto-btn" onclick="addGasto()">+</button>
   </div>
-  <div class="gasto-hint">Digite descrição e valor separados por espaço</div>
+  <div class="gasto-hint">Nome do gasto + valor separados por espaço</div>
 </div>
 
-<!-- CARD 3: DESPESAS FIXAS -->
+<!-- CARD 3 -->
 <div class="card">
-  <div class="card-title">📋 Despesas fixas</div>
+  <div class="card-title">📋 Despesas fixas <span id="mesFix" style="color:#444;font-weight:400;text-transform:none;font-size:10px"></span></div>
   <div id="fixasList"></div>
   <button class="add-btn" onclick="addFixa()">+ Adicionar despesa fixa</button>
 </div>
 
-<!-- CARD 4: TOTAL FIXAS -->
+<!-- CARD 4 -->
 <div class="card">
-  <div class="card-title">📊 Total fixas</div>
-  <div class="total-row">
-    <span class="total-label">Total do mês</span>
-    <span class="total-val" id="fixaTotal" style="color:#fff">R$ 0,00</span>
-  </div>
-  <div class="total-row">
-    <span class="total-label">✅ Já pago</span>
-    <span class="total-val" id="fixaPago" style="color:#00c47a">R$ 0,00</span>
-  </div>
-  <div class="prog-track"><div class="prog-fill" id="fixaBar" style="width:0%"></div></div>
-  <div class="total-row destaque">
-    <span class="total-label">⏳ Falta pagar</span>
-    <span class="total-val" id="fixaFalta" style="color:#ff4560">R$ 0,00</span>
-  </div>
+  <div class="card-title">📊 Resumo fixas</div>
+  <div class="total-row"><span class="tl">Total do mês</span><span class="tv" id="fxTotal" style="color:#ddd">R$ 0,00</span></div>
+  <div class="total-row"><span class="tl">✅ Pago</span><span class="tv" id="fxPago" style="color:#00c47a">R$ 0,00</span></div>
+  <div class="prog"><div class="prog-f" id="fxBar" style="width:0%"></div></div>
+  <div class="total-row big"><span class="tl">⏳ Falta pagar</span><span class="tv" id="fxFalta" style="color:#ff4560">R$ 0,00</span></div>
 </div>
 
-<!-- CARD 5: VARIÁVEIS -->
+<!-- CARD 5 -->
 <div class="card">
   <div class="card-title">🛒 Despesas variáveis</div>
   <div id="varList"></div>
-  <div class="total-row destaque" style="margin-top:10px;border-top:1px solid #1a1a1a;padding-top:10px;">
-    <span class="total-label">Total variáveis</span>
-    <span class="total-val" id="varTotal" style="color:#ff4560">R$ 0,00</span>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid #1a1a1a;">
+    <span style="font-size:12px;color:#555;">Total variáveis</span>
+    <span id="varTotal" style="font-family:'Courier New',monospace;font-size:15px;font-weight:700;color:#ff4560">R$ 0,00</span>
   </div>
 </div>
 
-<!-- CARD 6: RESUMO -->
+<!-- CARD 6 -->
 <div class="card">
-  <div class="card-title">🎯 Resumo do mês</div>
-  <div class="resumo-num" id="resumoNum">--</div>
-  <div class="resumo-breakdown">
-    <div class="resumo-row"><span>Caixa atual</span><span id="r-caixa">--</span></div>
-    <div class="resumo-row"><span>Fixas pendentes</span><span id="r-fixas" style="color:#ff4560">--</span></div>
-    <div class="resumo-row"><span>Variáveis</span><span id="r-vars" style="color:#ff4560">--</span></div>
-    <div class="resumo-row" style="border-top:1px solid #1a1a1a;margin-top:6px;padding-top:6px;color:#fff;font-weight:700;font-size:13px;"><span>Sobra real</span><span id="r-sobra">--</span></div>
+  <div class="card-title">🎯 Sobra real do mês</div>
+  <div class="resumo-n" id="resumoN">--</div>
+  <div style="margin-top:10px;">
+    <div class="r-row"><span>Caixa atual</span><span id="rCaixa">--</span></div>
+    <div class="r-row"><span>Fixas pendentes</span><span id="rFix" style="color:#ff4560">--</span></div>
+    <div class="r-row"><span>Variáveis</span><span id="rVar" style="color:#ff4560">--</span></div>
+    <div class="r-sep"></div>
+    <div class="r-big"><span style="color:#fff">Sobra real</span><span id="rSob">--</span></div>
   </div>
 </div>
 
 <div id="toast"></div>
 
-<!-- CONFIG MODAL -->
-<div id="configModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;padding:20px;overflow-y:auto;">
-  <div style="background:#111;border-radius:16px;padding:20px;max-width:400px;margin:40px auto;">
-    <h2 style="margin-bottom:4px;font-size:18px;">⚙️ Configuração</h2>
-    <p style="font-size:12px;color:#555;margin-bottom:20px;">Para sincronizar entre 2 celulares</p>
-    
-    <div style="margin-bottom:16px;">
-      <label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Seu nome</label>
-      <input id="cfgNome" style="width:100%;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px;color:#fff;font-size:15px;outline:none;" placeholder="Ex: Claudio ou Flávia">
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">JSONBin API Key</label>
-      <input id="cfgKey" style="width:100%;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px;color:#fff;font-size:13px;outline:none;font-family:monospace;" placeholder="$2a$10$...">
-      <p style="font-size:10px;color:#444;margin-top:4px;">Crie conta grátis em jsonbin.io → API Keys</p>
-    </div>
-
-    <div style="margin-bottom:20px;">
-      <label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Bin ID (deixe em branco para criar novo)</label>
-      <input id="cfgBin" style="width:100%;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px;color:#fff;font-size:13px;outline:none;font-family:monospace;" placeholder="685abc123def...">
-      <p style="font-size:10px;color:#444;margin-top:4px;">Se a Flávia já configurou, copie o Bin ID dela aqui</p>
-    </div>
-
-    <button onclick="saveConfig()" style="width:100%;background:#00c47a;border:none;border-radius:10px;padding:14px;color:#000;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;">Salvar e conectar</button>
-    <button onclick="hideConfig()" style="width:100%;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:14px;color:#666;font-size:14px;cursor:pointer;">Cancelar</button>
-    
-    <div id="cfgStatus" style="margin-top:12px;font-size:12px;color:#666;text-align:center;min-height:16px;"></div>
-    
-    <div style="margin-top:16px;background:#0a0a0a;border-radius:10px;padding:12px;">
-      <p style="font-size:11px;color:#555;margin-bottom:8px;font-weight:700;">📋 Bin ID para compartilhar:</p>
-      <p id="cfgBinShare" style="font-size:12px;color:#f5c842;font-family:monospace;word-break:break-all;">--</p>
+<!-- MODAL CONFIG -->
+<div class="modal" id="modalCfg">
+  <div class="modal-box">
+    <h2>⚙️ Configuração</h2>
+    <p>Sincronização entre os dois celulares</p>
+    <label class="lbl">Seu nome</label>
+    <input class="inp" id="cfgNome" placeholder="Claudio ou Flávia">
+    <label class="lbl">JSONBin API Key (X-MASTER-KEY)</label>
+    <input class="inp mono" id="cfgKey" placeholder="$2a$10$...">
+    <label class="lbl">Bin ID — deixe em branco para criar novo</label>
+    <input class="inp mono" id="cfgBin" placeholder="Cole aqui se a outra pessoa já configurou">
+    <button class="gbtn grn" onclick="salvarCfg()">Salvar e conectar</button>
+    <button class="gbtn drk" onclick="fecharCfg()">Cancelar</button>
+    <div id="cfgMsg" style="font-size:12px;color:#555;text-align:center;min-height:16px;margin-top:4px;"></div>
+    <div class="cfg-share">
+      <p>📋 Bin ID para compartilhar com a outra pessoa:</p>
+      <span id="cfgShare">--</span>
     </div>
   </div>
 </div>
 
-<div class="bottom-bar">
-  <button class="btn-config" onclick="showConfig()">⚙️ Config</button>
-  <button class="btn-sync" onclick="manualSync()">🔄 Sincronizar agora</button>
+<div class="bot">
+  <button class="btn-cfg" onclick="abrirCfg()">⚙️ Config</button>
+  <button class="btn-syn" onclick="syncAgora()">🔄 Sincronizar</button>
 </div>
 
 <script>
-// ── STATE
-var state = {
-  caixa: 0,
-  fixas: [],
-  vars: [],
-  updatedBy: '',
-  updatedAt: ''
-};
+// ══ DESPESAS FIXAS PADRÃO (pré-cadastradas)
+var FIXAS_PADRAO = [
+  {nome:'Aluguel da casa',valor:3200,pago:false},
+  {nome:'Água / SABESP',valor:125,pago:false},
+  {nome:'Luz / EDP',valor:305,pago:false},
+  {nome:'Internet + TV + 2 Cel',valor:500,pago:false},
+  {nome:'Gás',valor:120,pago:false},
+  {nome:'Condomínio Atua',valor:1200,pago:false},
+  {nome:'Financiamento Atua',valor:700,pago:false},
+  {nome:'IPTU Atua',valor:130,pago:false},
+  {nome:'Financiamento Carro',valor:1100,pago:false},
+  {nome:'Seguro Carro',valor:300,pago:false},
+  {nome:'Convênio Médico',valor:1783,pago:false},
+  {nome:'Impostos / DAS',valor:800,pago:false},
+  {nome:'INSS',valor:170,pago:false},
+  {nome:'Contabilidade',valor:300,pago:false},
+  {nome:'Remédio',valor:200,pago:false},
+  {nome:'Despesas Nino',valor:1000,pago:false},
+  {nome:'Mercado',valor:1500,pago:false},
+  {nome:'Gasolina',valor:600,pago:false},
+  {nome:'Lanche',valor:100,pago:false}
+];
 
-var cfg = {
-  nome: '',
-  apiKey: '',
-  binId: ''
-};
+var MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
-var syncTimer = null;
+// ══ ESTADO
+var hoje = new Date();
+var mesAtual = hoje.getMonth();
+var anoAtual = hoje.getFullYear();
+
+// Estado por mês: { caixa, fixas, vars }
+var dados = {}; // { "2026-06": { caixa:0, fixas:[], vars:[] }, ... }
+
+var cfg = {nome:'', apiKey:'', binId:''};
 var saveTimer = null;
-var isSyncing = false;
+var syncTimer = null;
+var ultimoUpdate = '';
 
-// ── INIT
+// ══ INIT
 function init(){
-  var saved = localStorage.getItem('fin_cfg');
-  if(saved){try{cfg=JSON.parse(saved);}catch(e){}}
+  var c = localStorage.getItem('fin_cfg');
+  if(c){try{cfg=JSON.parse(c);}catch(e){}}
+  var d = localStorage.getItem('fin_dados');
+  if(d){try{dados=JSON.parse(d);}catch(e){}}
   
-  var savedState = localStorage.getItem('fin_state');
-  if(savedState){try{state=JSON.parse(savedState);}catch(e){}}
-  
-  document.getElementById('caixa').value = state.caixa || '';
-  renderAll();
-  calcAll();
+  renderMes();
   
   if(cfg.apiKey && cfg.binId){
     setSyncStatus('loading','Carregando...');
-    loadFromCloud();
-    // Auto-sync every 10 seconds
-    setInterval(function(){
-      if(cfg.apiKey && cfg.binId) loadFromCloud();
-    }, 10000);
+    carregarCloud();
+    setInterval(function(){if(cfg.apiKey&&cfg.binId)carregarCloud();}, 8000);
   } else {
-    setSyncStatus('off','Toque em Config para sincronizar');
+    setSyncStatus('off','Toque em Config para ativar sincronização');
   }
 }
 
-// ── RENDER
-function renderAll(){
+// ══ MÊS
+function chave(){return anoAtual+'-'+pad(mesAtual+1);}
+
+function dadosMes(){
+  var k = chave();
+  if(!dados[k]){
+    // Cria mês novo com fixas padrão zeradas
+    dados[k] = {
+      caixa: 0,
+      fixas: FIXAS_PADRAO.map(function(f){return {nome:f.nome,valor:f.valor,pago:false};}),
+      vars: []
+    };
+  }
+  return dados[k];
+}
+
+function mudaMes(d){
+  mesAtual += d;
+  if(mesAtual < 0){mesAtual=11;anoAtual--;}
+  if(mesAtual > 11){mesAtual=0;anoAtual++;}
+  renderMes();
+}
+
+function renderMes(){
+  var lbl = MESES[mesAtual]+' '+anoAtual;
+  setT('mesLabel', lbl);
+  setT('mesFix', lbl);
+  document.getElementById('subLabel').textContent = 'Família Martins · '+lbl;
+  
+  var dm = dadosMes();
+  document.getElementById('caixa').value = dm.caixa || '';
   renderFixas();
   renderVars();
   calcAll();
 }
 
+// ══ RENDER
 function renderFixas(){
-  var list = document.getElementById('fixasList');
-  if(!state.fixas.length){list.innerHTML='<div class="empty">Nenhuma despesa fixa</div>';return;}
-  list.innerHTML = state.fixas.map(function(f,i){
+  var dm = dadosMes();
+  var el = document.getElementById('fixasList');
+  if(!dm.fixas.length){el.innerHTML='<div class="empty">Sem despesas fixas</div>';return;}
+  el.innerHTML = dm.fixas.map(function(f,i){
     return '<div class="fixa-item">'
       +'<div class="fixa-check'+(f.pago?' pago':'')+'" onclick="toggleFixa('+i+')">'+(f.pago?'✓':'')+'</div>'
-      +'<input class="fixa-nome'+(f.pago?' pago':'')+'" value="'+escHtml(f.nome)+'" onchange="updateFixaNome('+i+',this.value)" placeholder="Nome">'
-      +'<input class="fixa-valor'+(f.pago?' pago':'')+'" value="'+f.valor+'" type="number" inputmode="decimal" onchange="updateFixaValor('+i+',this.value)" oninput="calcAll()">'
+      +'<input class="fixa-nome'+(f.pago?' pago':'')+'" value="'+esc(f.nome)+'" onchange="updateNome('+i+',this.value)">'
+      +'<input class="fixa-valor'+(f.pago?' pago':'')+'" value="'+f.valor+'" type="number" inputmode="decimal" onchange="updateValor('+i+',this.value)" oninput="calcAll()">'
       +'<button class="fixa-del" onclick="delFixa('+i+')">✕</button>'
       +'</div>';
   }).join('');
 }
 
 function renderVars(){
-  var list = document.getElementById('varList');
-  if(!state.vars.length){list.innerHTML='<div class="empty">Nenhum gasto lançado</div>';return;}
-  var sorted = state.vars.slice().reverse();
-  list.innerHTML = sorted.map(function(v,ri){
-    var i = state.vars.length - 1 - ri;
+  var dm = dadosMes();
+  var el = document.getElementById('varList');
+  if(!dm.vars.length){el.innerHTML='<div class="empty">Nenhum gasto lançado</div>';return;}
+  el.innerHTML = dm.vars.slice().reverse().map(function(v,ri){
+    var i = dm.vars.length-1-ri;
     return '<div class="var-item">'
-      +'<div><div class="var-desc">'+escHtml(v.desc)+'</div><div class="var-data">'+v.hora+'</div></div>'
-      +'<span class="var-val">- R$ '+fmt(v.val)+'</span>'
+      +'<div class="var-l"><div class="var-d">'+esc(v.desc)+'</div><div class="var-t">'+v.hora+'</div></div>'
+      +'<span class="var-v">- R$ '+fmt(v.val)+'</span>'
       +'<button class="var-del" onclick="delVar('+i+')">✕</button>'
       +'</div>';
   }).join('');
 }
 
-// ── CALC
+// ══ CALC
 function calcAll(){
-  var caixaEl = document.getElementById('caixa');
-  var caixaVal = parseFloat(caixaEl.value) || 0;
-  state.caixa = caixaVal;
-
-  // Fixas
-  var fixTotal=0, fixPago=0;
-  state.fixas.forEach(function(f){
-    var v=parseFloat(f.valor)||0;
-    fixTotal+=v;
-    if(f.pago)fixPago+=v;
-  });
-  var fixFalta=fixTotal-fixPago;
-  var pct=fixTotal>0?Math.round(fixPago/fixTotal*100):0;
-
-  setT('fixaTotal','R$ '+fmt(fixTotal));
-  setT('fixaPago','R$ '+fmt(fixPago));
-  setT('fixaFalta','R$ '+fmt(fixFalta));
-  document.getElementById('fixaBar').style.width=pct+'%';
-
-  // Vars
-  var varTotal=0;
-  state.vars.forEach(function(v){varTotal+=parseFloat(v.val)||0;});
-  setT('varTotal','R$ '+fmt(varTotal));
-
-  // Resumo
-  var sobra=caixaVal-fixFalta-varTotal;
-  var el=document.getElementById('resumoNum');
-  el.textContent=(sobra<0?'- ':'')+'R$ '+fmt(Math.abs(sobra));
-  el.style.color=sobra>=0?'#00c47a':'#ff4560';
-
-  setT('r-caixa','R$ '+fmt(caixaVal));
-  setT('r-fixas','- R$ '+fmt(fixFalta));
-  setT('r-vars','- R$ '+fmt(varTotal));
-  var sobraEl=document.getElementById('r-sobra');
-  sobraEl.textContent=(sobra<0?'- ':'')+'R$ '+fmt(Math.abs(sobra));
-  sobraEl.style.color=sobra>=0?'#00c47a':'#ff4560';
+  var dm = dadosMes();
+  var cx = parseFloat(document.getElementById('caixa').value)||0;
+  dm.caixa = cx;
+  
+  var fxT=0,fxP=0;
+  dm.fixas.forEach(function(f){var v=parseFloat(f.valor)||0;fxT+=v;if(f.pago)fxP+=v;});
+  var fxF=fxT-fxP;
+  var pct=fxT>0?Math.round(fxP/fxT*100):0;
+  
+  setT('fxTotal','R$ '+fmt(fxT));
+  setT('fxPago','R$ '+fmt(fxP));
+  setT('fxFalta','R$ '+fmt(fxF));
+  document.getElementById('fxBar').style.width=pct+'%';
+  
+  var vT=0;
+  dm.vars.forEach(function(v){vT+=parseFloat(v.val)||0;});
+  setT('varTotal','R$ '+fmt(vT));
+  
+  var sob=cx-fxF-vT;
+  var rn=document.getElementById('resumoN');
+  rn.textContent=(sob<0?'- ':'')+'R$ '+fmt(Math.abs(sob));
+  rn.style.color=sob>=0?'#00c47a':'#ff4560';
+  
+  setT('rCaixa','R$ '+fmt(cx));
+  setT('rFix','- R$ '+fmt(fxF));
+  setT('rVar','- R$ '+fmt(vT));
+  var rs=document.getElementById('rSob');
+  rs.textContent=(sob<0?'- ':'')+'R$ '+fmt(Math.abs(sob));
+  rs.style.color=sob>=0?'#00c47a':'#ff4560';
 }
 
-// ── AÇÕES
+// ══ AÇÕES
 function addGasto(){
-  var input=document.getElementById('gastoInput');
-  var txt=input.value.trim();
+  var el=document.getElementById('gastoIn');
+  var txt=el.value.trim();
   if(!txt)return;
-
-  // Parse "Descrição valor"
-  var parts=txt.split(' ');
-  var valRaw=parts[parts.length-1];
+  var pts=txt.split(' ');
+  var valRaw=pts[pts.length-1];
   var val=parseFloat(valRaw.replace(',','.'));
-  
-  if(isNaN(val)||val<=0){showToast('Digite descrição e valor. Ex: Mercado 150');return;}
-  
-  var desc=parts.slice(0,-1).join(' ')||'Gasto';
-  var now=new Date();
-  var hora=pad(now.getDate())+'/'+pad(now.getMonth()+1)+' '+pad(now.getHours())+':'+pad(now.getMinutes());
-  
-  state.vars.push({desc:desc,val:val,hora:hora});
-  input.value='';
+  if(isNaN(val)||val<=0){toast('⚠️ Ex: Mercado 150 ou Farmácia 45,80');return;}
+  var desc=pts.slice(0,-1).join(' ')||'Gasto';
+  var n=new Date();
+  var h=pad(n.getDate())+'/'+pad(n.getMonth()+1)+' '+pad(n.getHours())+':'+pad(n.getMinutes());
+  dadosMes().vars.push({desc:desc,val:val,hora:h});
+  el.value='';
   renderVars();
   calcAll();
-  scheduleSave();
-  showToast('✓ '+desc+' R$ '+fmt(val)+' lançado');
+  agendarSave();
+  toast('✓ '+desc+' R$ '+fmt(val));
 }
 
 function addFixa(){
-  state.fixas.push({nome:'Nova despesa',valor:0,pago:false});
+  dadosMes().fixas.push({nome:'Nova despesa',valor:0,pago:false});
   renderFixas();
-  calcAll();
-  scheduleSave();
+  agendarSave();
 }
 
 function toggleFixa(i){
-  state.fixas[i].pago=!state.fixas[i].pago;
+  var f=dadosMes().fixas[i];
+  f.pago=!f.pago;
   renderFixas();
   calcAll();
-  scheduleSave();
-  showToast(state.fixas[i].pago?'✅ Marcado como pago':'↩️ Desmarcado');
+  agendarSave();
+  toast(f.pago?'✅ Pago!':'↩️ Desmarcado');
 }
 
-function updateFixaNome(i,val){state.fixas[i].nome=val;scheduleSave();}
-function updateFixaValor(i,val){state.fixas[i].valor=parseFloat(val)||0;calcAll();scheduleSave();}
+function updateNome(i,v){dadosMes().fixas[i].nome=v;agendarSave();}
+function updateValor(i,v){dadosMes().fixas[i].valor=parseFloat(v)||0;calcAll();agendarSave();}
 
 function delFixa(i){
-  if(!confirm('Remover "'+state.fixas[i].nome+'"?'))return;
-  state.fixas.splice(i,1);
-  renderFixas();
-  calcAll();
-  scheduleSave();
+  var f=dadosMes().fixas[i];
+  if(!confirm('Remover "'+f.nome+'"?'))return;
+  dadosMes().fixas.splice(i,1);
+  renderFixas();calcAll();agendarSave();
 }
 
 function delVar(i){
-  state.vars.splice(i,1);
-  renderVars();
-  calcAll();
-  scheduleSave();
+  dadosMes().vars.splice(i,1);
+  renderVars();calcAll();agendarSave();
 }
 
-// ── SAVE / SYNC
-function scheduleSave(){
-  localStorage.setItem('fin_state',JSON.stringify(state));
+// ══ SAVE / SYNC
+function agendarSave(){
+  localStorage.setItem('fin_dados',JSON.stringify(dados));
   clearTimeout(saveTimer);
-  saveTimer=setTimeout(function(){
-    if(cfg.apiKey&&cfg.binId)saveToCloud();
-  },2000);
+  saveTimer=setTimeout(function(){if(cfg.apiKey&&cfg.binId)salvarCloud();},2500);
 }
 
-function saveToCloud(){
-  if(isSyncing)return;
-  isSyncing=true;
+function salvarCloud(){
+  var payload={dados:dados,updatedBy:cfg.nome||'usuário',updatedAt:new Date().toISOString()};
   setSyncStatus('loading','Salvando...');
-  state.updatedBy=cfg.nome||'Usuário';
-  state.updatedAt=new Date().toISOString();
-  
   fetch('https://api.jsonbin.io/v3/b/'+cfg.binId,{
     method:'PUT',
     headers:{'Content-Type':'application/json','X-Master-Key':cfg.apiKey},
-    body:JSON.stringify(state)
+    body:JSON.stringify(payload)
   }).then(function(r){
-    isSyncing=false;
     if(r.ok){
-      var now=new Date();
-      setSyncStatus('ok','Salvo às '+pad(now.getHours())+':'+pad(now.getMinutes())+' por '+(cfg.nome||'você'));
+      var n=new Date();
+      setSyncStatus('ok','Salvo '+pad(n.getHours())+':'+pad(n.getMinutes())+' · '+(cfg.nome||'você'));
     } else {
       setSyncStatus('err','Erro ao salvar');
     }
-  }).catch(function(){
-    isSyncing=false;
-    setSyncStatus('err','Sem conexão');
-  });
+  }).catch(function(){setSyncStatus('err','Sem conexão');});
 }
 
-function loadFromCloud(){
+function carregarCloud(){
   if(!cfg.apiKey||!cfg.binId)return;
   fetch('https://api.jsonbin.io/v3/b/'+cfg.binId+'/latest',{
     headers:{'X-Master-Key':cfg.apiKey}
   }).then(function(r){return r.json();})
   .then(function(data){
-    if(data&&data.record){
-      var remote=data.record;
-      // Only update if remote is newer
-      if(!state.updatedAt||!remote.updatedAt||remote.updatedAt>state.updatedAt){
-        var myCaixa=state.caixa;
-        state=remote;
-        // Keep local caixa if user is editing
-        if(document.activeElement===document.getElementById('caixa')){
-          state.caixa=myCaixa;
-        } else {
-          document.getElementById('caixa').value=state.caixa||'';
-        }
-        localStorage.setItem('fin_state',JSON.stringify(state));
-        renderAll();
-      }
-      var now=new Date();
-      var updBy=remote.updatedBy?(' por '+remote.updatedBy):'';
-      setSyncStatus('ok','Sincronizado '+pad(now.getHours())+':'+pad(now.getMinutes())+updBy);
+    if(!data||!data.record)return;
+    var r=data.record;
+    if(!r.updatedAt||r.updatedAt<=ultimoUpdate)return;
+    ultimoUpdate=r.updatedAt;
+    if(r.dados){
+      dados=r.dados;
+      localStorage.setItem('fin_dados',JSON.stringify(dados));
+      document.getElementById('caixa').value=dadosMes().caixa||'';
+      renderFixas();renderVars();calcAll();
     }
-  }).catch(function(){
-    setSyncStatus('err','Sem conexão');
-  });
+    var n=new Date();
+    setSyncStatus('ok','Atualizado '+pad(n.getHours())+':'+pad(n.getMinutes())+' · '+(r.updatedBy||''));
+  }).catch(function(){setSyncStatus('err','Sem conexão');});
 }
 
-function manualSync(){
-  if(cfg.apiKey&&cfg.binId){
-    saveToCloud();
-    setTimeout(loadFromCloud,1500);
-  } else {
-    showConfig();
-  }
+function syncAgora(){
+  if(cfg.apiKey&&cfg.binId){salvarCloud();setTimeout(carregarCloud,1500);}
+  else abrirCfg();
 }
 
-// ── CONFIG
-function showConfig(){
+// ══ CONFIG
+function abrirCfg(){
   document.getElementById('cfgNome').value=cfg.nome||'';
   document.getElementById('cfgKey').value=cfg.apiKey||'';
   document.getElementById('cfgBin').value=cfg.binId||'';
-  document.getElementById('cfgBinShare').textContent=cfg.binId||'(não configurado)';
-  document.getElementById('configModal').style.display='block';
+  document.getElementById('cfgShare').textContent=cfg.binId||'--';
+  document.getElementById('cfgMsg').textContent='';
+  document.getElementById('modalCfg').style.display='block';
 }
 
-function hideConfig(){
-  document.getElementById('configModal').style.display='none';
-}
+function fecharCfg(){document.getElementById('modalCfg').style.display='none';}
 
-function saveConfig(){
+function salvarCfg(){
   var nome=document.getElementById('cfgNome').value.trim();
   var key=document.getElementById('cfgKey').value.trim();
   var bin=document.getElementById('cfgBin').value.trim();
-  
-  if(!key){document.getElementById('cfgStatus').textContent='⚠️ API Key obrigatória';return;}
-  
-  cfg.nome=nome;
-  cfg.apiKey=key;
-  document.getElementById('cfgStatus').textContent='Conectando...';
-  
+  if(!key){document.getElementById('cfgMsg').textContent='⚠️ API Key obrigatória';return;}
+  cfg.nome=nome;cfg.apiKey=key;
+  setMsg('Conectando...');
   if(bin){
     cfg.binId=bin;
     localStorage.setItem('fin_cfg',JSON.stringify(cfg));
-    document.getElementById('cfgBinShare').textContent=bin;
-    document.getElementById('cfgStatus').textContent='✅ Configurado! Carregando dados...';
-    loadFromCloud();
-    setTimeout(hideConfig,1500);
+    document.getElementById('cfgShare').textContent=bin;
+    setMsg('✅ Configurado! Carregando dados...');
+    carregarCloud();
+    setTimeout(fecharCfg,1800);
   } else {
-    // Create new bin
     fetch('https://api.jsonbin.io/v3/b',{
       method:'POST',
-      headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'Financeiro Familia'},
-      body:JSON.stringify(state)
+      headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'Financeiro Familia Martins'},
+      body:JSON.stringify({dados:dados,updatedBy:nome,updatedAt:new Date().toISOString()})
     }).then(function(r){return r.json();})
-    .then(function(data){
-      if(data&&data.metadata&&data.metadata.id){
-        cfg.binId=data.metadata.id;
+    .then(function(d){
+      if(d&&d.metadata&&d.metadata.id){
+        cfg.binId=d.metadata.id;
         localStorage.setItem('fin_cfg',JSON.stringify(cfg));
         document.getElementById('cfgBin').value=cfg.binId;
-        document.getElementById('cfgBinShare').textContent=cfg.binId;
-        document.getElementById('cfgStatus').textContent='✅ Criado! Bin ID: '+cfg.binId;
-        setSyncStatus('ok','Conectado como '+(nome||'usuário'));
+        document.getElementById('cfgShare').textContent=cfg.binId;
+        setMsg('✅ Criado! Bin ID: '+cfg.binId);
+        setSyncStatus('ok','Conectado · '+(nome||'usuário'));
       } else {
-        document.getElementById('cfgStatus').textContent='❌ API Key inválida';
+        setMsg('❌ API Key inválida');
       }
-    }).catch(function(){
-      document.getElementById('cfgStatus').textContent='❌ Erro de conexão';
-    });
+    }).catch(function(){setMsg('❌ Erro de conexão');});
   }
 }
 
-// ── HELPERS
-function setSyncStatus(type,msg){
-  var dot=document.getElementById('syncDot');
-  var txt=document.getElementById('syncText');
-  dot.className='sync-dot'+(type==='ok'?' ok':type==='err'?' err':type==='loading'?' loading':'');
-  txt.textContent=msg;
-}
+function setMsg(m){document.getElementById('cfgMsg').textContent=m;}
 
-function showToast(msg){
+// ══ HELPERS
+function setSyncStatus(t,m){
+  var d=document.getElementById('syncDot');
+  d.className='sync-dot'+(t==='ok'?' ok':t==='err'?' err':t==='loading'?' loading':'');
+  setT('syncText',m);
+}
+function toast(m){
   var el=document.getElementById('toast');
-  el.textContent=msg;
-  el.style.display='block';
+  el.textContent=m;el.style.display='block';
   clearTimeout(window._tt);
   window._tt=setTimeout(function(){el.style.display='none';},2500);
 }
-
-function fmt(n){
-  return Math.abs(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-
+function fmt(n){return Math.abs(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function pad(n){return String(n).padStart(2,'0');}
 function setT(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
-function escHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// ── START
 init();
 </script>
 </body>
